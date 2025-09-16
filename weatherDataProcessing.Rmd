@@ -1,0 +1,82 @@
+---
+title: "dataPrepWeather"
+output: pdf_document
+date: "2023-03-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+weatherData = read.csv(file.path("/Users/pranitkotkar/Downloads","weatherData.csv"))
+summary(weatherData)
+```
+
+```{r}
+weatherData = cbind(weatherData[1],weatherData[3],weatherData[4],weatherData[5],weatherData[6])
+```
+
+```{r}
+# convert the date column to a Date object
+weatherData$Date <- as.Date(weatherData$Date, format = "%m/%d/%Y")
+
+# format the date column to the desired format
+weatherData$Date <- format(weatherData$Date, "%Y-%m-%d")
+
+# print the updated data frame
+print(weatherData)
+```
+```{r}
+weatherData$Date <- as.Date(weatherData$Date)
+summary(weatherData)
+```
+```{r}
+newData <- subset(weatherData, Date >= "0001-01-01" & Date <= "0022-06-30")
+```
+
+```{r}
+newData$Date <- gsub("^\\d{2}", "20", newData$Date)
+summary(newData)
+```
+```{r}
+newData$Date <- as.Date(newData$Date)
+summary(newData)
+```
+```{r}
+which(is.na(newData$TMAX))
+```
+
+```{r}
+newData <- newData[-2259, ]
+summary(newData)
+```
+
+```{r}
+which(is.na(newData$TMIN))
+```
+
+```{r}
+newData <- newData[-299,]
+summary(newData)
+```
+```{r}
+which(is.na(newData$TMIN))
+```
+
+```{r}
+newData <- newData[-2227,]
+summary(newData)
+```
+```{r}
+which(is.na(newData$TMIN))
+```
+
+```{r}
+newData <- newData[-2560,]
+summary(newData)
+```
+```{r}
+newData$SNOW <- ifelse(is.na(newData$SNOW), 0, newData$SNOW)
+summary(newData)
+```
